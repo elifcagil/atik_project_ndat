@@ -16,7 +16,7 @@ class User(Base):
     user_id =Column(Integer,primary_key =True,autoincrement =True)
     email=Column(String(50),nullable=False,unique=True )#unique tanımlamak için
     password=Column(String(50),nullable=False)
-    name=Column(String(10),nullable=False)
+    name=Column(String(50),nullable=False)
     surname =Column(String(10),nullable=False)
     user_type=Column(String(10),nullable=False)
 
