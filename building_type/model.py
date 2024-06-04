@@ -16,7 +16,7 @@ class BuildingTypes(Base):
 
 
 class BuildingTypesPydantic(BaseModel):
-    building_type_name:str
+    building_types_name:str
 
     class Config:
         from_attributes = True
