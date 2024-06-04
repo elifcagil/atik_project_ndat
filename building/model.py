@@ -25,7 +25,7 @@ class Building(Base):
 
 class BuildingPydantic(BaseModel):
     building_name: str
-    building_type_id: int
+    building_types_id: int
 
     class Config:
         from_attributes = True

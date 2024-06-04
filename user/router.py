@@ -71,7 +71,7 @@ class DeletedUser(BaseModel):
     user_type:UserEnumStr
 
 @router.delete("/user_delete/{user_id}",response_model=DeletedUser)
-async def delete_student(user_id:int,db:Session = Depends(get_db)):
+async def delete_user(user_id:int,db:Session = Depends(get_db)):
     db_user = db.query(User).filter(User.user_id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404,detail="student not found")
@@ -82,13 +82,13 @@ async def delete_student(user_id:int,db:Session = Depends(get_db)):
     return db_user
 
 
-@router.put("user_update/{user_id}",response_model=UserPydantic)
-async def update_student(user_id:int, student : UserPydantic,db:Session =Depends(get_db)):
+@router.put("/user_update/{user_id}",response_model=UserPydantic)
+async def update_user(user_id:int, user : UserPydantic,db:Session =Depends(get_db)):
     db_user = db.query(User).filter(User.user_id ==user_id).first()
     if db_user is None:
-        raise HTTPException(status_code=404,detail="Student not found")
+        raise HTTPException(status_code=404,detail="User not found")
 
-    for attr,value in vars(student).items(): #vars() fonksiyonu, student objesinin özelliklerini bir sözlük olarak döndürür
+    for attr,value in vars(user).items(): #vars() fonksiyonu, student objesinin özelliklerini bir sözlük olarak döndürür
         setattr(db_user, attr, value) #bu özelliklerin herbirini (attr) alır ve karşılık gelen değeri (value) setattr() fonksiyonu ile ilgili öğrenci kaydına (db_student) atar.
         #student parametresinde gelen yeni öğrenci bilgilerini, veritabanındaki öğrenci kaydına (db_student) uygular.
     db.commit()
