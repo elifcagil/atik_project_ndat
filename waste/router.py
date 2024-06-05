@@ -32,6 +32,19 @@ def create_waste(waste: WastePydantic, db: Session = Depends(get_db)):
     # Veri geçerliliği kontrolü
     if waste.quantity <= 0 or waste.quantity > 1000:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Miktar 0 ile 1000 arasında olmalıdır.")
+    waste_type = db.query(WasteType).filter(WasteType.waste_type_id == waste.waste_type_id).first()
+    if not waste_type:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Belirtilen atık türü bulunamadı.")
+
+    # Building ID kontrolü
+    building = db.query(Building).filter(Building.building_id == waste.building_id).first()
+    if not building:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Belirtilen bina bulunamadı.")
+
+    # User ID kontrolü
+    user = db.query(User).filter(User.user_id == waste.user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Belirtilen kullanıcı bulunamadı.")
 
     # Yukarıdaki kontrollerden geçildiğinde, yeni atık oluşturulabilir.
     db_waste = Waste(**waste.dict())
@@ -56,7 +69,19 @@ def update_waste(waste_id: int, waste: WastePydantic, db: Session = Depends(get_
     # Veri geçerliliği kontrolü
     if waste.quantity <= 0 or waste.quantity > 1000:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Miktar 0 ile 1000 arasında olmalıdır.")
+    building = db.query(Building).filter(Building.building_id == waste.building_id).first()
+    if not building:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Belirtilen bina bulunamadı.")
 
+    # User ID kontrolü
+    user = db.query(User).filter(User.user_id == waste.user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Belirtilen kullanıcı bulunamadı.")
+
+    # Waste Type ID kontrolü
+    waste_type = db.query(WasteType).filter(WasteType.waste_type_id == waste.waste_type_id).first()
+    if not waste_type:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Belirtilen atık türü bulunamadı.")
     # Yukarıdaki kontrollerden geçildiğinde, atığı güncelle
     for key, value in waste.dict().items():
         setattr(db_waste, key, value)
