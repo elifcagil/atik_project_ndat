@@ -7,7 +7,10 @@ from waste_type.model import WasteTypePydantic,WasteType
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:123456@localhost/postgres"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False , autoflush=False, bind=engine)
-router=APIRouter()
+router = APIRouter(
+    tags=["Waste Type Enpoints"],
+    responses={404: {"description": "Not found"}},
+)
 
 def get_db():
     db = SessionLocal() #Oturum Başlatma

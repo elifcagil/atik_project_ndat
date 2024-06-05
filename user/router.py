@@ -14,7 +14,10 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-router=APIRouter()
+router = APIRouter(
+    tags=["User Enpoints"],
+    responses={404: {"description": "Not found"}},
+)
 
 
 def get_db():

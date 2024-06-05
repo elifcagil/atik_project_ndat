@@ -17,8 +17,10 @@ SessionLocal = sessionmaker(autocommit=False , autoflush=False, bind=engine)  #v
 #sessionmaker fonksiyonunun içinde temel veritabanı bağlantısı ve oturumun nasıl davrancağını belirtirirz
 
 
-router=APIRouter()
-
+router = APIRouter(
+    tags=["Building Enpoints"],
+    responses={404: {"description": "Not found"}},
+)
 
 
 def get_db():

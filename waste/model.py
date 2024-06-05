@@ -1,7 +1,7 @@
 from sqlalchemy import Column,create_engine,Integer,String,ForeignKey,Enum as SQLAlchemyEnum,DateTime
 from sqlalchemy.orm import declarative_base,relationship
 from pydantic import BaseModel,EmailStr
-from datetime import date
+from datetime import date,datetime
 from enum import Enum
 
 
@@ -12,13 +12,13 @@ Base=declarative_base() #orm modellerinin türetilmesi için temel class oluştu
 class User(Base):
     __tablename__='users'
 
-
     user_id =Column(Integer,primary_key =True,autoincrement =True)
-    email=Column(String(50),nullable=False,unique=True )#unique tanımlamak için
+    email=Column(String(50),nullable=False,unique=True)
     password=Column(String(50),nullable=False)
     name=Column(String(10),nullable=False)
     surname =Column(String(10),nullable=False)
     user_type=Column(String(10),nullable=False)
+    waste_1 = relationship('Waste', back_populates='user')
 
 
 
@@ -60,43 +60,12 @@ class Building(Base):
     building_types_id = Column(Integer, ForeignKey('building_types.building_types_id'), nullable=False)
 
     building_type = relationship('BuildingTypes', back_populates='build')
+    waste = relationship('Waste', back_populates='building')
 
 
 class BuildingPydantic(BaseModel):
     building_name: str
     building_type_id: int
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -108,17 +77,19 @@ class Waste(Base):
     user_id=Column(Integer,ForeignKey('users.user_id'),nullable=False)
     quantity=Column(Integer,nullable=False)
     waste_type_id=Column (Integer,ForeignKey('waste_type.waste_type_id'),nullable=False)
-    record_date=Column(DateTime,nullable=False)
+    record_date=Column(DateTime,nullable=False, default=datetime.now)  # Varsayılan değer eklendi
 
     building=relationship('Building',back_populates='waste')
     user =relationship('User',back_populates='waste_1')
+    waste_type = relationship('WasteType')  # WasteType ile ilişkiyi ekledik.
+
 
 class WastePydantic(BaseModel):
     building_id : int
     user_id : int
     quantity : int
     waste_type_id:int
-    record_date:date
+    record_date:datetime
 
     class Config:
         from_attributes = True #orm modellemesi için bu class yapısı kullanıldı bize pydantic modellemesinde kolaylık sağladı

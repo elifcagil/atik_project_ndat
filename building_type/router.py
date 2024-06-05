@@ -7,7 +7,10 @@ from building_type.model import BuildingTypesPydantic,BuildingTypes
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:123456@localhost/postgres"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False , autoflush=False, bind=engine)
-router=APIRouter()
+router = APIRouter(
+    tags=["Building Type Enpoints"],
+    responses={404: {"description": "Not found"}},
+)
 
 def get_db():
     db = SessionLocal() #Oturum Başlatma
