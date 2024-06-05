@@ -21,7 +21,6 @@ class Building(Base):
     building_types_id = Column(Integer, ForeignKey('building_types.building_types_id'), nullable=False)
 
     building_type = relationship('BuildingTypes', back_populates='build')
-    waste = relationship('Waste', back_populates='building')
 
 class BuildingPydantic(BaseModel):
     building_name: str
