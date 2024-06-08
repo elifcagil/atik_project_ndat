@@ -1,0 +1,14 @@
+#pip freeze > requirements.txt bu komut ile proje bağlılıklarını requirements.txt ile dosyası oluşturduk
+herhangi bir python projesinde bu bağımlılıkları yüklemek için
+pip install -r requirements.txt komutu ile proje bağımlılıklarını indirir
+
+
+.venv i aktifleştirmek için
+
+
+ source .venv/bin/activate
+ komutunu proje dosyasının terminaline yazarak aktifleştririz.
+
+
+deactivate devre dışı bırakmak içinde bu komutu kullanırız.
+

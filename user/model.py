@@ -26,7 +26,7 @@ class UserEnumStr (str,Enum):
     Personel="Personel"
 
 class UserPydantic(BaseModel):
-    email:EmailStr # bu tanımlama e mail yapısında olacağını belirtir
+    email:str # bu tanımlama e mail yapısında olacağını belirtir
     password:str
     name:str
     surname:str
